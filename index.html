@@ -38,7 +38,8 @@
             width: 80%;
             min-height: 50px;
             border: 1px solid #ccc;
-            white-space: pre;
+            white-space: pre-wrap; /* Для сохранения форматирования текста */
+            word-wrap: break-word;
         }
     </style>
 </head>
@@ -48,6 +49,7 @@
     <div>
         <button onclick="encrypt()">Зашифровать</button>
         <button onclick="decrypt()">Расшифровать</button>
+        <button onclick="copyToClipboard()">Копировать</button> <!-- Кнопка копирования -->
     </div>
     <div class="output" id="outputText"></div>
 
@@ -84,11 +86,12 @@
         }
     };
 
-    addLanguageSupport(32, 126);
-    addLanguageSupport(1040, 1103);
-    addLanguageSupport(1025, 1105);
+    addLanguageSupport(32, 126);  // Поддержка символов ASCII
+    addLanguageSupport(1040, 1103); // Русский алфавит
+    addLanguageSupport(1025, 1105); // Ё и ё
     window.charToCode = charToCode;
     window.codeToChar = codeToChar;
+
     function encrypt() {
         const input = document.getElementById("inputText").value;
         const encrypted = input
@@ -109,6 +112,20 @@
             })
             .join("");
         document.getElementById("outputText").textContent = decrypted;
+    }
+
+    function copyToClipboard() {
+        const outputText = document.getElementById("outputText");
+        const range = document.createRange();
+        range.selectNode(outputText);
+        window.getSelection().removeAllRanges();
+        window.getSelection().addRange(range);
+        try {
+            document.execCommand('copy');
+        } catch (err) {
+            alert(`Ошибка! ${err}`);
+        }
+        window.getSelection().removeAllRanges();
     }
     </script>
 </body>
