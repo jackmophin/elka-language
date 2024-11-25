@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Шифратор Ёлка</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+        textarea {
+            width: 80%;
+            height: 100px;
+            margin: 10px 0;
+            padding: 10px;
+            font-size: 16px;
+        }
+        button {
+            margin: 5px;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #d0d0d0;
+        }
+        .output {
+            margin-top: 20px;
+            padding: 10px;
+            background: #ffffff;
+            width: 80%;
+            min-height: 50px;
+            border: 1px solid #ccc;
+            white-space: pre;
+        }
+    </style>
+</head>
+<body>
+    <h1>Переводчик на ёлковский</h1>
+    <textarea id="inputText" placeholder="Введите текст..."></textarea>
+    <div>
+        <button onclick="encrypt()">Зашифровать</button>
+        <button onclick="decrypt()">Расшифровать</button>
+    </div>
+    <div class="output" id="outputText"></div>
+
+    <script>
+    const generateUniqueCombinations = (words, length) => {
+        const results = [];
+
+        const backtrack = (current) => {
+            if (current.length === length) {
+                results.push(current.join(" "));
+                return;
+            }
+            for (const word of words) {
+                backtrack([...current, word]);
+            }
+        };
+
+        backtrack([]);
+        return results;
+    };
+
+    const keyWords = ["Ёлка", "ёлка", "елка", "Елка"];
+    const charToCode = {};
+    const codeToChar = {};
+    const combinations = generateUniqueCombinations(keyWords, 4);
+
+    const addLanguageSupport = (start, end) => {
+        for (let i = start; i <= end; i++) {
+            const char = String.fromCharCode(i);
+            const code = combinations.shift(); 
+            if (!code) break;
+            charToCode[char] = code;
+            codeToChar[code] = char;
+        }
+    };
+
+    addLanguageSupport(32, 126);
+    addLanguageSupport(1040, 1103);
+    addLanguageSupport(1025, 1105);
+    window.charToCode = charToCode;
+    window.codeToChar = codeToChar;
+    function encrypt() {
+        const input = document.getElementById("inputText").value;
+        const encrypted = input
+            .split("") // Разбиваем на символы
+            .map(char => charToCode[char] || "")
+            .join("  ");
+        document.getElementById("outputText").textContent = encrypted.trim();
+    }
+
+    // Функция дешифрования
+    function decrypt() {
+        const input = document.getElementById("inputText").value.trim();
+        const decrypted = input
+            .split("  ")
+            .map(code => {
+                const trimmedCode = code.trim();
+                return codeToChar[trimmedCode] || "?";
+            })
+            .join("");
+        document.getElementById("outputText").textContent = decrypted;
+    }
+    </script>
+</body>
+</html>
