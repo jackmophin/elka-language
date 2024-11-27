@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Шифратор Елка</title>
+    <title>Шифратор Ёлка</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -71,7 +71,7 @@
         return results;
     };
 
-    const keyWords = ["🎄", "🌲", "   ", "    "];
+    const keyWords = ["🎄", "🌲", "елка", "eлка"];
     const charToCode = {};
     const codeToChar = {};
     const combinations = generateUniqueCombinations(keyWords, 4);
@@ -114,6 +114,7 @@
         document.getElementById("outputText").textContent = decrypted;
     }
 
+    // Функция для копирования текста в буфер обмена
     function copyToClipboard() {
         const outputText = document.getElementById("outputText");
         const range = document.createRange();
@@ -121,11 +122,12 @@
         window.getSelection().removeAllRanges();
         window.getSelection().addRange(range);
         try {
-            document.execCommand('copy');
+            document.execCommand('copy'); // Копирование текста
+            alert("Текст скопирован в буфер обмена!");
         } catch (err) {
-            alert(`Ошибка! ${err}`);
+            alert("Ошибка при копировании текста!");
         }
-        window.getSelection().removeAllRanges();
+        window.getSelection().removeAllRanges(); // Убираем выделение
     }
     </script>
 </body>
