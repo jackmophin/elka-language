@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Шифратор Ёлка</title>
+    <title>Шифратор Ёлка DXM</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -91,6 +91,19 @@
     addLanguageSupport(1025, 1105); // Ё и ё
     window.charToCode = charToCode;
     window.codeToChar = codeToChar;
+
+function adds(symbols) {
+    symbols.split("").forEach(char => {
+        const code = combinations.shift(); // Получаем следующий уникальный код
+        if (code) {
+            charToCode[char] = code;
+            codeToChar[code] = char;
+        } else {
+            alert("Закончились уникальные комбинации для кодирования.");
+        }
+    });
+}
+adds("🎄🌲")
 
     function encrypt() {
         const input = document.getElementById("inputText").value;
